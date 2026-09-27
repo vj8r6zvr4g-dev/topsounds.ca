@@ -217,7 +217,40 @@
   // ==========================================
   // LOAD PRODUCTS
   // ==========================================
+async function saveProduct() {
+  const name = document.getElementById("productName").value;
+  const price = document.getElementById("productPrice").value;
+  const image_url = document.getElementById("productImage").value;
+  const description = document.getElementById("productDescription").value;
 
+  const { data, error } = await supabaseClient
+    .from("products")
+    .insert([
+      {
+        name: name,
+        price: Number(price),
+        image_url: image_url,
+        description: description
+      }
+    ]);
+
+  if (error) {
+    document.getElementById("adminMessage").innerText =
+      "Error: " + error.message;
+    console.error(error);
+    return;
+  }
+
+  document.getElementById("adminMessage").innerText =
+    "Product saved successfully!";
+
+  document.getElementById("productName").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productImage").value = "";
+  document.getElementById("productDescription").value = "";
+
+  loadProducts();
+}
   async function loadProducts() {
 
     const productsDiv = document.getElementById("products");
