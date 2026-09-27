@@ -177,7 +177,7 @@
 
     <input type="number" id="productPrice" placeholder="Price">
 
-    <input type="text" id="productImage" placeholder="Image URL">
+    <input type="file" id="productImage" placeholder="Image URL">
 
     <textarea id="productDescription" placeholder="Product description"></textarea>
 
@@ -220,9 +220,29 @@
 async function saveProduct() {
   const name = document.getElementById("productName").value;
   const price = document.getElementById("productPrice").value;
-  const image_url = document.getElementById("productImage").value;
+  const imagefile = document.getElementById("productImage").files[0];
   const description = document.getElementById("productDescription").value;
+let image_url = "";
 
+if (imageFile) {
+    const fileName = Date.now() + "-" + imageFile.name;
+
+    const { error: uploadError } = await supabaseClient.storage
+        .from("product-images")
+        .upload(fileName, imageFile);
+
+    if (uploadError) {
+        document.getElementById("adminMessage").innerText =
+            "Image upload error: " + uploadError.message;
+        return;
+    }
+
+    const { data: urlData } = supabaseClient.storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+
+    image_url = urlData.publicUrl;
+}
   const { data, error } = await supabaseClient
     .from("Products")
     .insert([
