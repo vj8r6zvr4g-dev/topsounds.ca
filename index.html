@@ -411,7 +411,7 @@ async function saveProduct() {
     if (id) {
 
       result = await supabaseClient
-        .from("products")
+        .from("Products")
         .update({
           name,
           price,
@@ -423,7 +423,7 @@ async function saveProduct() {
     } else {
 
       result = await supabaseClient
-        .from("products")
+        .from("Products")
         .insert({
           name,
           price,
