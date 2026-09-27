@@ -224,7 +224,7 @@ async function saveProduct() {
   const description = document.getElementById("productDescription").value;
 
   const { data, error } = await supabaseClient
-    .from("products")
+    .from("Products")
     .insert([
       {
         name: name,
@@ -256,7 +256,7 @@ async function saveProduct() {
     const productsDiv = document.getElementById("products");
 
     const { data, error } = await supabaseClient
-      .from("products")
+      .from("Products")
       .select("*")
       .order("created_at", { ascending: false });
 
